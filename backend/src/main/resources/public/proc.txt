@@ -1,0 +1,4 @@
+public class proc {
+    int a = 0;
+    a += 8;
+}
