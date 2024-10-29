@@ -1,0 +1,152 @@
+
+    ////////////////////////// INSERT //////////////////////////
+    /**
+     * ps to insert into tbldata a new row with next auto-gen id and the two given
+     * values
+     */
+    private PreparedStatement mInsertOne;
+    /** the SQL for mInsertOne */
+    private static final String SQL_INSERT_ONE_TBLDATA = "INSERT INTO tblData" +
+            " VALUES (default, ?, ?);";
+
+    /**
+     * safely performs mInsertOne = mConnection.prepareStatement("INSERT INTO
+     * tblData VALUES (default, ?, ?)");
+     */
+    private boolean init_mInsertOne() {
+        // return true on success, false otherwise
+        try {
+            mInsertOne = mConnection.prepareStatement(SQL_INSERT_ONE_TBLDATA);
+        } catch (SQLException e) {
+            System.err.println("Error creating prepared statement: mInsertOne");
+            System.err.println("Using SQL: " + SQL_INSERT_ONE_TBLDATA);
+            e.printStackTrace();
+            this.disconnect(); // @TODO is disconnecting on exception what we want?
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Insert a row into the database
+     * 
+     * @param subject The subject for this new row
+     * @param message The message body for this new row
+     * @return The number of rows that were inserted
+     */
+    int insertRow(String subject, String message) {
+        if (mInsertOne == null) // not yet initialized, do lazy init
+            init_mInsertOne(); // lazy init
+        int count = 0;
+        try {
+            System.out.println("Database operation: insertRow(String, String)");
+            mInsertOne.setString(1, subject);
+            mInsertOne.setString(2, message);
+            count += mInsertOne.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    ////////////////////////// UPDATE ONE //////////////////////////
+    /** ps to replace the message in tabledata for specified row with given value */
+    private PreparedStatement mUpdateOne;
+    /** the SQL for mUpdateOne */
+    private static final String SQL_UPDATE_ONE_TBLDATA = "UPDATE tblData" +
+            " SET message = ?" +
+            " WHERE id = ?";
+
+    /**
+     * safely performs mUpdateOne = mConnection.prepareStatement("UPDATE tblData SET
+     * message = ? WHERE id = ?");
+     */
+    private boolean init_mUpdateOne() {
+        // return true on success, false otherwise
+        try {
+            mUpdateOne = mConnection.prepareStatement(SQL_UPDATE_ONE_TBLDATA);
+        } catch (SQLException e) {
+            System.err.println("Error creating prepared statement: mUpdateOne");
+            System.err.println("Using SQL: " + SQL_UPDATE_ONE_TBLDATA);
+            e.printStackTrace();
+            this.disconnect(); // @TODO is disconnecting on exception what we want?
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Update the message for a row in the database
+     * 
+     * @param id      The id of the row to update
+     * @param message The new message contents
+     * @return The number of rows that were updated. -1 indicates an error.
+     */
+    int updateOne(int id, String message) {
+        if (mUpdateOne == null) // not yet initialized, do lazy init
+            init_mUpdateOne(); // lazy init
+        int res = -1;
+        try {
+            System.out.println("Database operation: updateOne(int id, String message)");
+            mUpdateOne.setString(1, message);
+            mUpdateOne.setInt(2, id);
+            res = mUpdateOne.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+
+    
+    ////////////////////////// SELECT ALL //////////////////////////
+    /** ps to return all rows from tblData, but only the id and subject columns */
+    private PreparedStatement mSelectAll;
+    /** the SQL for mSelectAll */
+    private static final String SQL_SELECT_ALL_TBLDATA = "SELECT id, subject" +
+            " FROM tblData;";
+
+    /**
+     * safely performs mSelectAll = mConnection.prepareStatement("SELECT id, subject
+     * FROM tblData");
+     */
+    private boolean init_mSelectAll() {
+        // return true on success, false otherwise
+        try {
+            mSelectAll = mConnection.prepareStatement(SQL_SELECT_ALL_TBLDATA);
+        } catch (SQLException e) {
+            System.err.println("Error creating prepared statement: mSelectAll");
+            System.err.println("Using SQL: " + SQL_SELECT_ALL_TBLDATA);
+            e.printStackTrace();
+            this.disconnect(); // @TODO is disconnecting on exception what we want?
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Query the database for a list of all subjects and their IDs
+     * 
+     * @return All rows, as an ArrayList; note that message is intentionally not
+     *         returned
+     */
+    ArrayList<RowData> selectAll() {
+        if (mSelectAll == null) // not yet initialized, do lazy init
+            init_mSelectAll(); // lazy init
+        ArrayList<RowData> res = new ArrayList<RowData>();
+        try {
+            System.out.println("Database operation: selectAll()");
+            ResultSet rs = mSelectAll.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String subject = rs.getString("subject");
+                RowData data = new RowData(id, subject, null);
+                res.add(data);
+            }
+            rs.close(); // remember to close the result set
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }

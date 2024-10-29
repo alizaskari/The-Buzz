@@ -1,0 +1,32 @@
+/*
+                 * } else if (action == '+') {
+                 * String subject = getString(in, "Enter the subject");
+                 * String message = getString(in, "Enter the message");
+                 * if (subject.equals("") || message.equals(""))
+                 * continue;
+                 * int res = db.insertRow(subject, message);
+                 * System.out.println(res + " rows added");
+                 * } else if (action == '~') {
+                 * int id = getInt(in, "Enter the row ID :> ");
+                 * if (id == -1)
+                 * continue;
+                 * String newMessage = getString(in, "Enter the new message");
+                 * int res = db.updateOne(id, newMessage);
+                 * if (res == -1)
+                 * continue;
+                 * System.out.println("  " + res + " rows updated");
+                 */
+
+
+
+                 /*
+                 * } else if (action == '*') {
+                 * ArrayList<Database.RowData> res = db.selectAll();
+                 * if (res == null)
+                 * continue;
+                 * System.out.println("  Current Database Contents");
+                 * System.out.println("  -------------------------");
+                 * for (Database.RowData rd : res) {
+                 * System.out.println("  [" + rd.mId() + "] " + rd.mSubject());
+                 * }
+                 */
