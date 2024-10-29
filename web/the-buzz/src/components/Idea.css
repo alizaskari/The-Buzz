@@ -1,0 +1,62 @@
+.row {
+    height: 120px;
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    background-color: gray;
+    margin-bottom: 20px;
+}
+
+.drop {
+    height: 100%;
+    width: 10%;
+    background-color: burlywood;
+    float: left;
+}
+
+.info {
+    height: 100%;
+    width: 90%;
+    float: right;
+    background-color: lightgray;
+}
+
+.idea-content {
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+    word-wrap: break-word;
+}
+
+.likes {
+    height: 100%;
+    width: 19%;
+    float: right;
+    position: relative;
+}
+
+.like_button {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.dislike_button {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.like_count {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 60%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
